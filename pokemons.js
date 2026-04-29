@@ -4623,8 +4623,8 @@ var pokemons = [
 
 const elList = document.querySelector(".js-list");
 const search = document.querySelector("#search");
+const filter = document.querySelector("#filter");
 
-/* MODAL */
 const modal = document.createElement("div");
 modal.classList.add("modal");
 document.body.appendChild(modal);
@@ -4633,7 +4633,6 @@ const modalContent = document.createElement("div");
 modalContent.classList.add("modal-content");
 modal.appendChild(modalContent);
 
-/* CARDS */
 pokemons.forEach((pokemon, index) => {
 	const elItem = document.createElement("li");
 	elItem.classList.add("pokemon-card");
@@ -4675,7 +4674,6 @@ pokemons.forEach((pokemon, index) => {
 	id.textContent = pokemon.id;
 	elItem.appendChild(id);
 
-	/* LIKE */
 	const like = document.createElement("button");
 	like.textContent = "❤️";
 	like.classList.add("like-btn");
@@ -4686,18 +4684,13 @@ pokemons.forEach((pokemon, index) => {
 		like.classList.toggle("active");
 	});
 
-	/* 3D */
 	elItem.addEventListener("mousemove", (e) => {
 		const rect = elItem.getBoundingClientRect();
-
 		const x = e.clientX - rect.left;
 		const y = e.clientY - rect.top;
 
-		const centerX = rect.width / 2;
-		const centerY = rect.height / 2;
-
-		const rotateX = -(y - centerY) / 8;
-		const rotateY = (x - centerX) / 8;
+		const rotateX = -(y - rect.height / 2) / 8;
+		const rotateY = (x - rect.width / 2) / 8;
 
 		elItem.style.transform = `
 			perspective(1000px)
@@ -4705,17 +4698,12 @@ pokemons.forEach((pokemon, index) => {
 			rotateY(${rotateY}deg)
 			scale(1.05)
 		`;
-
-		elItem.style.setProperty("--x", x + "px");
-		elItem.style.setProperty("--y", y + "px");
 	});
 
 	elItem.addEventListener("mouseleave", () => {
-		elItem.style.transform =
-			"perspective(1000px) rotateX(0) rotateY(0)";
+		elItem.style.transform = "perspective(1000px) rotateX(0) rotateY(0)";
 	});
 
-	/* MODAL */
 	elItem.addEventListener("click", () => {
 		modal.classList.add("active");
 
@@ -4728,18 +4716,28 @@ pokemons.forEach((pokemon, index) => {
 	});
 });
 
-/* CLOSE MODAL */
 modal.addEventListener("click", () => {
 	modal.classList.remove("active");
 });
 
-/* SEARCH */
-search.addEventListener("input", () => {
-	const value = search.value.toLowerCase();
+function filterPokemons() {
+	const searchValue = search.value.toLowerCase();
+	const filterValue = filter.value;
 
 	document.querySelectorAll(".pokemon-card").forEach(card => {
 		const name = card.querySelector(".pokemon-name").textContent.toLowerCase();
+		const type = card.querySelector(".pokemon-type").textContent;
 
-		card.style.display = name.includes(value) ? "block" : "none";
+		const matchSearch = name.includes(searchValue);
+		const matchFilter = filterValue === "all" || type.includes(filterValue);
+
+		if (matchSearch && matchFilter) {
+			card.classList.remove("hide");
+		} else {
+			card.classList.add("hide");
+		}
 	});
-});
+}
+
+search.addEventListener("input", filterPokemons);
+filter.addEventListener("change", filterPokemons);
