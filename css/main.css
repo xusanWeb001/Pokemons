@@ -3,10 +3,15 @@ body {
     font-family: Arial, sans-serif;
 }
 
+/* Container */
 .js-list {
     max-width: 1200px;
     margin: 0 auto;
     width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
 }
 
 /* Card */
@@ -15,12 +20,14 @@ body {
     border-radius: 20px;
     padding: 20px;
     width: 200px;
-    transition: 0.3s ease;
+    transition: 0.4s ease;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    animation: fadeIn 0.8s ease forwards;
 }
 
+/* Hover animatsiya */
 .pokemon-card:hover {
-    transform: translateY(-10px) scale(1.05);
+    transform: translateY(-10px) scale(1.07) rotate(1deg);
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.8);
 }
 
@@ -30,6 +37,7 @@ body {
     height: 100px;
     object-fit: contain;
     margin-bottom: 10px;
+    animation: float 3s ease-in-out infinite;
 }
 
 /* Name */
@@ -47,4 +55,57 @@ body {
     padding: 5px 10px;
     border-radius: 10px;
     display: inline-block;
+}
+
+/* === ANIMATIONS === */
+
+/* Kartalar chiqib kelishi */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Rasm suzib turadi */
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* === MEDIA QUERY === */
+
+/* Tablet */
+@media (max-width: 768px) {
+    .pokemon-card {
+        width: 45%;
+    }
+}
+
+/* Telefon */
+@media (max-width: 480px) {
+    .pokemon-card {
+        width: 100%;
+    }
+
+    .pokemon-name {
+        font-size: 18px;
+    }
+
+    .pokemon-img {
+        width: 80px;
+        height: 80px;
+    }
 }
