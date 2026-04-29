@@ -4644,4 +4644,9 @@ pokemons.forEach(pokemon => {
 	type.classList.add("pokemon-type");
 	elItem.appendChild(type);
 	type.textContent = pokemon.type;
+
+	const id = document.createElement("span");
+	id.classList.add("pokemon-id");
+	elItem.appendChild(id);
+	id.textContent = pokemon.id;
 });
