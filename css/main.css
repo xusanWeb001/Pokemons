@@ -1,166 +1,178 @@
 body {
-    background: #0f172a;
-    font-family: Arial, sans-serif;
+    background: linear-gradient(180deg, #0f172a, #020617);
+    font-family: 'Segoe UI', sans-serif;
+    overflow-x: hidden;
 }
 
-/* Container */
+/* glow */
+body::before {
+    content: "";
+    position: fixed;
+    width: 400px;
+    height: 400px;
+    top: -100px;
+    left: -100px;
+    background: radial-gradient(circle, rgba(56, 189, 248, 0.15), transparent);
+    filter: blur(100px);
+    z-index: -1;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    width: 400px;
+    height: 400px;
+    bottom: -100px;
+    right: -100px;
+    background: radial-gradient(circle, rgba(250, 204, 21, 0.15), transparent);
+    filter: blur(100px);
+    z-index: -1;
+}
+
+/* SEARCH */
+.search-box {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 15px;
+    width: 250px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    background: #0f172a;
+    color: white;
+}
+
+/* LIST */
 .js-list {
-    max-width: 1200px;
+    max-width: 1300px;
     margin: 0 auto;
-    width: 100%;
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 30px;
     justify-content: center;
 }
 
-/* Card */
-.pokemon-card {
-    background: linear-gradient(145deg, #1e293b, #0f172a);
-    border-radius: 20px;
-    padding: 20px;
-    width: 200px;
-    transition: 0.4s ease;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-    animation: fadeIn 0.8s ease forwards;
-}
-
-/* Hover animatsiya */
-.pokemon-card:hover {
-    transform: translateY(-10px) scale(1.07) rotate(1deg);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.8);
-}
-
-/* Image */
-.pokemon-img {
-    width: 100px;
-    height: 100px;
-    object-fit: contain;
-    margin-bottom: 10px;
-    animation: float 3s ease-in-out infinite;
-}
-
-/* Name */
-.pokemon-name {
-    color: #facc15;
-    font-size: 20px;
-    margin: 10px 0 5px;
-}
-
-/* Type */
-.pokemon-type {
-    color: #38bdf8;
-    font-size: 14px;
-    background: rgba(255, 255, 255, 0.1);
-    padding: 5px 10px;
-    border-radius: 10px;
-    display: inline-block;
-}
-
-/* === ANIMATIONS === */
-
-/* Kartalar chiqib kelishi */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Rasm suzib turadi */
-@keyframes float {
-
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-10px);
-    }
-}
-
-/* === MEDIA QUERY === */
-
-/* Tablet */
-@media (max-width: 768px) {
-    .pokemon-card {
-        width: 45%;
-    }
-}
-
-/* Telefon */
-@media (max-width: 480px) {
-    .pokemon-card {
-        width: 100%;
-    }
-
-    .pokemon-name {
-        font-size: 18px;
-    }
-
-    .pokemon-img {
-        width: 80px;
-        height: 80px;
-    }
-}
-
-.pokemon-logo {
-    display: block;
-    margin: 20px auto;
-    width: 250px;
-    max-width: 90%;
-    filter: drop-shadow(0 0 10px rgba(250, 204, 21, 0.6));
-    animation: logoGlow 3s ease-in-out infinite;
-    transition: 0.3s ease;
-}
-
-/* hover effect */
-.pokemon-logo:hover {
-    transform: scale(1.05);
-    filter: drop-shadow(0 0 20px rgba(56, 189, 248, 0.8));
-}
-
-/* animatsiya */
-@keyframes logoGlow {
-
-    0%,
-    100% {
-        transform: scale(1);
-        filter: drop-shadow(0 0 10px rgba(250, 204, 21, 0.4));
-    }
-
-    50% {
-        transform: scale(1.03);
-        filter: drop-shadow(0 0 20px rgba(250, 204, 21, 0.8));
-    }
-}
-
-/* mobile */
-@media (max-width: 480px) {
-    .pokemon-logo {
-        width: 180px;
-    }
-}
-
+/* CARD 3D */
 .pokemon-card {
     position: relative;
-    /* MUHIM */
+    width: 220px;
+    padding: 20px;
+    border-radius: 20px;
+
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    transform-style: preserve-3d;
+    transition: transform 0.2s ease;
+
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
 }
 
+/* shine */
+.pokemon-card::after {
+    content: "";
+    position: absolute;
+    top: var(--y);
+    left: var(--x);
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.2), transparent 60%);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+/* IMAGE */
+.pokemon-img {
+    width: 110px;
+    height: 110px;
+    object-fit: contain;
+    transform: translateZ(60px);
+}
+
+/* NAME */
+.pokemon-name {
+    font-size: 20px;
+    font-weight: bold;
+    background: linear-gradient(90deg, #facc15, #38bdf8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transform: translateZ(45px);
+}
+
+/* TYPE */
+.pokemon-type {
+    margin-top: 8px;
+    padding: 6px 12px;
+    border-radius: 12px;
+    font-size: 13px;
+    color: white;
+    display: inline-block;
+    transform: translateZ(35px);
+}
+
+/* ID */
 .pokemon-id {
     position: absolute;
     top: 10px;
     right: 10px;
-    background: red;
-    color: #fff;
-    font-size: 12px;
+    background: linear-gradient(45deg, red, orange);
     padding: 4px 8px;
-    border-radius: 6px;
-    font-weight: bold;
+    border-radius: 8px;
+    font-size: 11px;
+    transform: translateZ(70px);
+}
+
+/* LIKE */
+.like-btn {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    border: none;
+    background: transparent;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.like-btn.active {
+    transform: scale(1.3);
+}
+
+/* MODAL */
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.3s;
+}
+
+.modal.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.modal-content {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 20px;
+    text-align: center;
+    width: 300px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.modal-content img {
+    width: 120px;
+}
+
+.modal-content h2 {
+    color: #000;
+}
+
+.modal-content p {
+    color: #111;
 }

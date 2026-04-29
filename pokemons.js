@@ -4621,32 +4621,125 @@ var pokemons = [
 
 
 
-const elList = document.querySelector(".js-list")
+const elList = document.querySelector(".js-list");
+const search = document.querySelector("#search");
 
+/* MODAL */
+const modal = document.createElement("div");
+modal.classList.add("modal");
+document.body.appendChild(modal);
 
-pokemons.forEach(pokemon => {
+const modalContent = document.createElement("div");
+modalContent.classList.add("modal-content");
+modal.appendChild(modalContent);
+
+/* CARDS */
+pokemons.forEach((pokemon, index) => {
 	const elItem = document.createElement("li");
 	elItem.classList.add("pokemon-card");
+
+	elItem.style.animationDelay = `${index * 0.1}s`;
 	elList.appendChild(elItem);
 
-	const elImg = document.createElement("img");
-	elImg.classList.add("pokemon-img");
-	elItem.appendChild(elImg);
-	elImg.src = pokemon.img;
-	elImg.alt = pokemon.name;
+	const img = document.createElement("img");
+	img.classList.add("pokemon-img");
+	img.src = pokemon.img;
+	elItem.appendChild(img);
 
 	const name = document.createElement("h3");
 	name.classList.add("pokemon-name");
-	elItem.appendChild(name);
 	name.textContent = pokemon.name;
+	elItem.appendChild(name);
 
 	const type = document.createElement("p");
 	type.classList.add("pokemon-type");
-	elItem.appendChild(type);
 	type.textContent = pokemon.type;
+	elItem.appendChild(type);
+
+	const colors = {
+		Fire: "#f97316",
+		Water: "#38bdf8",
+		Grass: "#22c55e",
+		Electric: "#facc15",
+		Poison: "#a855f7",
+		Bug: "#84cc16",
+		Normal: "#a3a3a3",
+		Ground: "#ca8a04",
+		Fairy: "#f472b6"
+	};
+
+	type.style.background = colors[pokemon.type] || "#6366f1";
 
 	const id = document.createElement("span");
 	id.classList.add("pokemon-id");
-	elItem.appendChild(id);
 	id.textContent = pokemon.id;
+	elItem.appendChild(id);
+
+	/* LIKE */
+	const like = document.createElement("button");
+	like.textContent = "❤️";
+	like.classList.add("like-btn");
+	elItem.appendChild(like);
+
+	like.addEventListener("click", (e) => {
+		e.stopPropagation();
+		like.classList.toggle("active");
+	});
+
+	/* 3D */
+	elItem.addEventListener("mousemove", (e) => {
+		const rect = elItem.getBoundingClientRect();
+
+		const x = e.clientX - rect.left;
+		const y = e.clientY - rect.top;
+
+		const centerX = rect.width / 2;
+		const centerY = rect.height / 2;
+
+		const rotateX = -(y - centerY) / 8;
+		const rotateY = (x - centerX) / 8;
+
+		elItem.style.transform = `
+			perspective(1000px)
+			rotateX(${rotateX}deg)
+			rotateY(${rotateY}deg)
+			scale(1.05)
+		`;
+
+		elItem.style.setProperty("--x", x + "px");
+		elItem.style.setProperty("--y", y + "px");
+	});
+
+	elItem.addEventListener("mouseleave", () => {
+		elItem.style.transform =
+			"perspective(1000px) rotateX(0) rotateY(0)";
+	});
+
+	/* MODAL */
+	elItem.addEventListener("click", () => {
+		modal.classList.add("active");
+
+		modalContent.innerHTML = `
+			<img src="${pokemon.img}">
+			<h2>${pokemon.name}</h2>
+			<p>Type: ${pokemon.type}</p>
+			<p>ID: ${pokemon.id}</p>
+		`;
+	});
+});
+
+/* CLOSE MODAL */
+modal.addEventListener("click", () => {
+	modal.classList.remove("active");
+});
+
+/* SEARCH */
+search.addEventListener("input", () => {
+	const value = search.value.toLowerCase();
+
+	document.querySelectorAll(".pokemon-card").forEach(card => {
+		const name = card.querySelector(".pokemon-name").textContent.toLowerCase();
+
+		card.style.display = name.includes(value) ? "block" : "none";
+	});
 });
