@@ -109,3 +109,41 @@ body {
         height: 80px;
     }
 }
+
+.pokemon-logo {
+    display: block;
+    margin: 20px auto;
+    width: 250px;
+    max-width: 90%;
+    filter: drop-shadow(0 0 10px rgba(250, 204, 21, 0.6));
+    animation: logoGlow 3s ease-in-out infinite;
+    transition: 0.3s ease;
+}
+
+/* hover effect */
+.pokemon-logo:hover {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 20px rgba(56, 189, 248, 0.8));
+}
+
+/* animatsiya */
+@keyframes logoGlow {
+
+    0%,
+    100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 10px rgba(250, 204, 21, 0.4));
+    }
+
+    50% {
+        transform: scale(1.03);
+        filter: drop-shadow(0 0 20px rgba(250, 204, 21, 0.8));
+    }
+}
+
+/* mobile */
+@media (max-width: 480px) {
+    .pokemon-logo {
+        width: 180px;
+    }
+}
